@@ -1,11 +1,10 @@
+"""Page Object do modal de cadastro (botão 'Sign up' no menu)."""
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
 
 
 class SignupPage(BasePage):
-    """Modal de cadastro (botão 'Sign up' no menu)."""
-
     BOTAO_MENU = (By.ID, "signin2")
     MODAL = (By.ID, "signInModal")
     CAMPO_USUARIO = (By.ID, "sign-username")
@@ -13,6 +12,8 @@ class SignupPage(BasePage):
     BOTAO_CADASTRAR = (By.CSS_SELECTOR, "#signInModal button[onclick='register()']")
 
     def abrir(self):
+        """Acessa o site e abre o modal de cadastro."""
+        self.abrir_site()
         self.clicar(self.BOTAO_MENU)
         self.esperar_visivel(self.MODAL)
         return self

@@ -1,47 +1,69 @@
+"""
+Configuracao compartilhada pelos testes (o pytest carrega este arquivo sozinho).
+
+- Cria e fecha o navegador para cada teste (fixture "driver").
+- Tira um print da tela quando um teste falha (pasta "evidencias").
+
+Variaveis de ambiente opcionais:
+  BASE_URL  endereco do sistema (padrao: https://www.demoblaze.com)
+  HEADLESS  use HEADLESS=1 para rodar sem abrir a janela do navegador
+"""
 import os
 from datetime import datetime
-from pathlib import Path
 
 import pytest
 from selenium import webdriver
 
-BASE_URL = "https://www.demoblaze.com"
-EVIDENCIAS_DIR = Path(__file__).parent / "evidencias"
+BASE_URL = os.getenv("BASE_URL", "https://www.demoblaze.com").rstrip("/")
+PASTA_EVIDENCIAS = os.path.join(os.path.dirname(__file__), "evidencias")
+
+
+@pytest.fixture
+def base_url():
+    return BASE_URL
 
 
 @pytest.fixture
 def driver():
-    """Abre o Chrome, entrega o driver ao teste e fecha ao final.
-
-    Para rodar sem abrir janela: HEADLESS=1 pytest
-    """
-    options = webdriver.ChromeOptions()
-    options.add_argument("--window-size=1366,900")
+    opcoes = webdriver.ChromeOptions()
     if os.getenv("HEADLESS") == "1":
-        options.add_argument("--headless=new")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
+        opcoes.add_argument("--headless=new")
+    if os.getenv("CI") == "1":  # servidores/containers (ex.: GitHub Actions)
+        opcoes.add_argument("--no-sandbox")
+        opcoes.add_argument("--disable-dev-shm-usage")
+    opcoes.add_argument("--window-size=1280,900")
+    # Evita o aviso do Chrome de "senha vazada" que cobre a tela no cadastro/login
+    opcoes.add_experimental_option(
+        "prefs",
+        {
+            "credentials_enable_service": False,
+            "profile.password_manager_enabled": False,
+            "profile.password_manager_leak_detection": False,
+        },
+    )
+    if os.getenv("CHROME_BINARY"):
+        opcoes.binary_location = os.getenv("CHROME_BINARY")
 
-    drv = webdriver.Chrome(options=options)
-    drv.implicitly_wait(0)  # usamos apenas esperas explícitas (WebDriverWait)
-    drv.get(BASE_URL)
-    yield drv
-    drv.quit()
+    # O Selenium Manager baixa sozinho o driver compativel com o Chrome instalado.
+    navegador = webdriver.Chrome(options=opcoes)
+    navegador.implicitly_wait(2)
+    yield navegador
+    navegador.quit()
 
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
-    """Salva um print em evidencias/ sempre que um teste falhar."""
-    outcome = yield
-    report = outcome.get_result()
-    if report.when == "call" and report.failed:
-        drv = item.funcargs.get("driver")
-        if drv is not None:
-            EVIDENCIAS_DIR.mkdir(exist_ok=True)
-            stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            arquivo = EVIDENCIAS_DIR / f"FALHA_{item.name}_{stamp}.png"
-            try:
-                drv.switch_to.alert.accept()  # print não sai com alerta aberto
+    """Quando um teste falha, salva um print da tela como evidencia do defeito."""
+    resultado = yield
+    relatorio = resultado.get_result()
+    if relatorio.when == "call" and relatorio.failed:
+        navegador = item.funcargs.get("driver")
+        if navegador:
+            try:  # com alerta JavaScript aberto o print falha; fecha antes
+                navegador.switch_to.alert.accept()
             except Exception:
                 pass
-            drv.save_screenshot(str(arquivo))
+            os.makedirs(PASTA_EVIDENCIAS, exist_ok=True)
+            momento = datetime.now().strftime("%Y%m%d-%H%M%S")
+            nome = "".join(c if c.isalnum() else "_" for c in item.name)
+            navegador.save_screenshot(os.path.join(PASTA_EVIDENCIAS, f"{momento}_{nome}.png"))
