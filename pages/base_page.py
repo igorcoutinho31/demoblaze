@@ -1,13 +1,23 @@
+"""Base dos Page Objects: esperas explícitas e leitura de alertas JavaScript."""
+import os
+
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+
+PASTA_EVIDENCIAS = os.path.join(os.path.dirname(os.path.dirname(__file__)), "evidencias")
 
 
 class BasePage:
     TIMEOUT = 10
 
-    def __init__(self, driver):
+    def __init__(self, driver, base_url):
         self.driver = driver
+        self.base_url = base_url
         self.wait = WebDriverWait(driver, self.TIMEOUT)
+
+    def abrir_site(self):
+        self.driver.get(self.base_url + "/")
+        return self
 
     def clicar(self, locator):
         self.wait.until(EC.element_to_be_clickable(locator)).click()
@@ -30,5 +40,7 @@ class BasePage:
         alerta.accept()
         return texto
 
-    def screenshot(self, caminho):
-        self.driver.save_screenshot(str(caminho))
+    def salvar_evidencia(self, nome):
+        """Salva um print em evidencias/<nome>.png (útil também quando o teste passa)."""
+        os.makedirs(PASTA_EVIDENCIAS, exist_ok=True)
+        self.driver.save_screenshot(os.path.join(PASTA_EVIDENCIAS, f"{nome}.png"))
