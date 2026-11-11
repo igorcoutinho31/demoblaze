@@ -26,7 +26,15 @@ def main():
     from selenium import webdriver
 
     try:
-        navegador = webdriver.Chrome()  # o Selenium Manager baixa o driver sozinho
+        import os
+        import tempfile
+
+        opcoes = webdriver.ChromeOptions()
+        opcoes.add_argument(f"--user-data-dir={tempfile.mkdtemp(prefix='chrome-selenium-')}")
+        opcoes.add_argument("--no-first-run")
+        if os.getenv("CI") == "1":
+            opcoes.add_argument("--no-sandbox")
+        navegador = webdriver.Chrome(options=opcoes)  # o Selenium Manager baixa o driver sozinho
     except Exception as erro:
         print("FALHOU ao abrir o Chrome.")
         print("Verifique se o Google Chrome esta instalado e se a rede libera")
