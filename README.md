@@ -16,7 +16,7 @@ pages/                   Page Objects: seletores e ações de cada tela
   login_page.py          modal Log in
 tests/
   dados.py               dados fictícios e gerador de usuário único
-  test_cadastro_login.py fluxo 1: CT01, CT02...
+  test_cadastro_login.py fluxo 1: CT01 a CT04
 evidencias/              prints gerados pelos testes
 docs/                    modelo do relatório A3
 ```
@@ -44,9 +44,9 @@ Precisa do Google Chrome instalado; o Selenium baixa o driver sozinho.
 | ID | Caso | Técnica | Automatizado |
 |----|------|---------|--------------|
 | CT01 | Cadastro com usuário novo mostra alerta de sucesso | PE (válida) | ✅ |
-| CT02 | Cadastro com usuário já existente é recusado | PE (inválida) | ⏳ |
-| CT03 | Login válido mostra "Welcome <usuário>" | PE (válida) | ⏳ |
-| CT04 | Login com senha errada mostra alerta de erro | PE (inválida) | ⏳ |
+| CT02 | Cadastro com usuário já existente é recusado | PE (inválida) | ✅ |
+| CT03 | Login válido mostra "Welcome <usuário>" | PE (válida) | ✅ |
+| CT04 | Login com senha errada mostra alerta de erro | PE (inválida) | ✅ |
 | CT05 | Filtro por categoria mostra só produtos da categoria | PE | ⏳ |
 | CT06 | Adicionar produto ao carrinho e conferir o total | — | ⏳ |
 | CT07 | Compra com nome e cartão vazios é recusada | VL (0 caractere) | ⏳ |
@@ -69,3 +69,16 @@ Teste que falha não se apaga: é um defeito e vai para o relatório.
 
 **Declaração de uso de IA:** a adaptação do kit para o Demoblaze foi feita com
 auxílio do Claude Code (Anthropic) e revisada pelo grupo.
+
+## Problemas comuns
+
+**`session not created: Chrome failed to start: crashed` / `DevToolsActivePort file doesn't exist`**
+(o Chrome abre e fecha na hora). Tente, nesta ordem:
+
+1. Feche todas as janelas do Chrome e rode de novo.
+2. Desligue o sandbox (PowerShell): `$env:CI="1"; python3 -m pytest`
+3. Rode sem janela: `$env:HEADLESS="1"; $env:CI="1"; python3 -m pytest`
+4. Rode `python3 verificar_ambiente.py` e mostre a saída ao professor:
+   pode ser bloqueio da rede/política do laboratório.
+
+Para limpar as variáveis depois: `Remove-Item Env:CI, Env:HEADLESS`

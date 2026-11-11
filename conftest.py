@@ -7,8 +7,11 @@ Configuracao compartilhada pelos testes (o pytest carrega este arquivo sozinho).
 Variaveis de ambiente opcionais:
   BASE_URL  endereco do sistema (padrao: https://www.demoblaze.com)
   HEADLESS  use HEADLESS=1 para rodar sem abrir a janela do navegador
+  CI        use CI=1 para desligar o sandbox do Chrome (máquinas de laboratório/servidores)
 """
 import os
+import shutil
+import tempfile
 from datetime import datetime
 
 import pytest
@@ -32,6 +35,14 @@ def driver():
         opcoes.add_argument("--no-sandbox")
         opcoes.add_argument("--disable-dev-shm-usage")
     opcoes.add_argument("--window-size=1280,900")
+    # Perfil temporário e limpo a cada teste: evita o Chrome fechar sozinho
+    # ("DevToolsActivePort file doesn't exist") em máquinas de laboratório,
+    # onde o perfil padrão costuma estar bloqueado ou com restrições.
+    perfil = tempfile.mkdtemp(prefix="chrome-selenium-")
+    opcoes.add_argument(f"--user-data-dir={perfil}")
+    opcoes.add_argument("--no-first-run")
+    opcoes.add_argument("--no-default-browser-check")
+    opcoes.add_argument("--disable-extensions")
     # Evita o aviso do Chrome de "senha vazada" que cobre a tela no cadastro/login
     opcoes.add_experimental_option(
         "prefs",
@@ -49,6 +60,7 @@ def driver():
     navegador.implicitly_wait(2)
     yield navegador
     navegador.quit()
+    shutil.rmtree(perfil, ignore_errors=True)
 
 
 @pytest.hookimpl(hookwrapper=True)
