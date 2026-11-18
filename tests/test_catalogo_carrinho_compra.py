@@ -30,7 +30,7 @@ def adicionar_ao_carrinho(driver, base_url, nome):
     catalogo.abrir_produto(nome)
     preco = catalogo.preco_produto()
     alerta = catalogo.adicionar_carrinho()
-    assert alerta == "Product added.", f"Alerta inesperado ao adicionar {nome!r}: {alerta!r}"
+    assert alerta == "Product added", f"Alerta inesperado ao adicionar {nome!r}: {alerta!r}"
     return preco
 
 
