@@ -14,9 +14,13 @@ pages/                   Page Objects: seletores e ações de cada tela
   base_page.py           esperas explícitas, alertas JavaScript, evidências
   signup_page.py         modal Sign up
   login_page.py          modal Log in
+  catalogo_page.py       vitrine, categorias e página do produto
+  carrinho_page.py       carrinho
+  compra_page.py         modal Place Order
 tests/
   dados.py               dados fictícios e gerador de usuário único
   test_cadastro_login.py fluxo 1: CT01 a CT04
+  test_catalogo_carrinho_compra.py  fluxos 2 e 3: CT05 a CT08
 evidencias/              prints gerados pelos testes
 docs/                    modelo do relatório A3
 ```
@@ -47,10 +51,10 @@ Precisa do Google Chrome instalado; o Selenium baixa o driver sozinho.
 | CT02 | Cadastro com usuário já existente é recusado | PE (inválida) | ✅ |
 | CT03 | Login válido mostra "Welcome <usuário>" | PE (válida) | ✅ |
 | CT04 | Login com senha errada mostra alerta de erro | PE (inválida) | ✅ |
-| CT05 | Filtro por categoria mostra só produtos da categoria | PE | ⏳ |
-| CT06 | Adicionar produto ao carrinho e conferir o total | — | ⏳ |
-| CT07 | Compra com nome e cartão vazios é recusada | VL (0 caractere) | ⏳ |
-| CT08 | Compra completa mostra a confirmação | — | ⏳ |
+| CT05 | Filtro por categoria mostra só produtos da categoria | PE | ✅ |
+| CT06 | Adicionar produto ao carrinho e conferir o total | — | ✅ |
+| CT07 | Compra com nome e cartão vazios é recusada | VL (0 caractere) | ✅ |
+| CT08 | Compra completa mostra a confirmação | — | ✅ |
 
 ## Checkpoints
 
