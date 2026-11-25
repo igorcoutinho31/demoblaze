@@ -1,5 +1,6 @@
 """Page Object do carrinho de compras."""
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 from pages.base_page import BasePage
 
@@ -19,6 +20,19 @@ class CarrinhoPage(BasePage):
     def aguardar_itens(self, quantidade=1):
         """Os itens chegam com atraso e um de cada vez: espera ter `quantidade` linhas."""
         self.wait.until(lambda d: len(d.find_elements(*self.LINHAS)) >= quantidade)
+
+    def aguardar_quantidade_exata(self, quantidade):
+        """Espera o carrinho ter exatamente `quantidade` linhas (ex.: depois de remover um item)."""
+        self.wait.until(lambda d: len(d.find_elements(*self.LINHAS)) == quantidade)
+
+    def remover_produto(self, nome):
+        """Clica em 'Delete' na linha do produto e espera o carrinho recarregar."""
+        linhas = self.driver.find_elements(*self.LINHAS)
+        linha = next(l for l in linhas if nome in l.text)
+        quantidade = len(linhas)
+        linha.find_element(By.LINK_TEXT, "Delete").click()
+        self.wait.until(EC.staleness_of(linha))
+        self.aguardar_quantidade_exata(quantidade - 1)
 
     def nomes_produtos(self):
         return [e.text.strip() for e in self.driver.find_elements(*self.NOMES)]

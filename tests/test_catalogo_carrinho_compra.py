@@ -96,3 +96,36 @@ def test_ct08_compra_completa_mostra_confirmacao(driver, base_url):
     compra.salvar_evidencia("CT08_compra_confirmada")
     assert mensagem == "Thank you for your purchase!"
     compra.fechar_confirmacao()
+
+
+@pytest.mark.catalogo
+def test_ct10_pagina_do_produto_mostra_detalhes(driver, base_url):
+    """CT10 — página do produto exibe nome, preço, imagem e descrição."""
+    # Dado que estou na página inicial
+    catalogo = CatalogoPage(driver, base_url).abrir()
+    # Quando abro a página do Samsung galaxy s6
+    catalogo.abrir_produto(PRODUTO)
+    detalhes = catalogo.detalhes_produto()
+    catalogo.salvar_evidencia("CT10_pagina_do_produto")
+    # Então vejo nome, preço, imagem e descrição do produto
+    assert detalhes["nome"] == PRODUTO
+    assert detalhes["preco"] > 0
+    assert detalhes["imagem_carregada"], "A imagem do produto não carregou."
+    assert detalhes["descricao"], "A descrição do produto está vazia."
+
+
+@pytest.mark.carrinho
+def test_ct11_remover_produto_atualiza_carrinho_e_total(driver, base_url):
+    """CT11 — remover 1 de 2 produtos: o item sai e o total é recalculado."""
+    # Dado que tenho dois produtos no carrinho
+    precos = dict(zip(PRODUTOS_CT06, [adicionar_ao_carrinho(driver, base_url, n) for n in PRODUTOS_CT06]))
+    carrinho = CarrinhoPage(driver, base_url).abrir()
+    carrinho.aguardar_itens(quantidade=2)
+    # Quando removo o Samsung galaxy s6
+    carrinho.remover_produto(PRODUTO)
+    nomes = carrinho.nomes_produtos()
+    total = carrinho.total()
+    carrinho.salvar_evidencia("CT11_produto_removido")
+    # Então só o Nokia continua no carrinho e o total é o preço dele
+    assert nomes == ["Nokia lumia 1520"], f"Itens no carrinho: {nomes}"
+    assert total == precos["Nokia lumia 1520"], f"Total {total} ≠ {precos['Nokia lumia 1520']}"

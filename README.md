@@ -19,8 +19,9 @@ pages/                   Page Objects: seletores e ações de cada tela
   compra_page.py         modal Place Order
 tests/
   dados.py               dados fictícios e gerador de usuário único
-  test_cadastro_login.py fluxo 1: CT01 a CT04
-  test_catalogo_carrinho_compra.py  fluxos 2 e 3: CT05 a CT08
+  test_cadastro_login.py fluxo 1: CT01 a CT04 e CT09
+  test_catalogo_carrinho_compra.py  fluxos 2 e 3: CT05 a CT08, CT10 e CT11
+  test_validacoes.py     validações que o site deveria ter: CT12 a CT14
 evidencias/              prints gerados pelos testes
 docs/                    modelo do relatório A3
 ```
@@ -39,6 +40,8 @@ python3 -m pytest
 | `pytest tests/test_cadastro_login.py` | roda um arquivo |
 | `pytest -k ct01` | roda testes cujo nome contém "ct01" |
 | `pytest -m cadastro` | roda só os testes do fluxo de cadastro |
+| `pytest -m validacao` | roda só os testes de validação (CT12 a CT14) |
+| `pytest -m "not validacao"` | roda tudo menos as validações |
 | `HEADLESS=1 pytest` | roda sem abrir a janela (Windows: `set HEADLESS=1 && pytest`) |
 
 Precisa do Google Chrome instalado; o Selenium baixa o driver sozinho.
@@ -55,6 +58,15 @@ Precisa do Google Chrome instalado; o Selenium baixa o driver sozinho.
 | CT06 | Adicionar produto ao carrinho e conferir o total | — | ✅ |
 | CT07 | Compra com nome e cartão vazios é recusada | VL (0 caractere) | ✅ |
 | CT08 | Compra completa mostra a confirmação | — | ✅ |
+| CT09 | Login com usuário não cadastrado mostra erro | PE (inválida) | ✅ |
+| CT10 | Página do produto mostra nome, preço, imagem e descrição | — | ✅ |
+| CT11 | Remover produto do carrinho atualiza itens e total | — | ✅ |
+| CT12 | Cadastro com senha de 7 caracteres é recusado | VL | ✅ |
+| CT13 | Compra com cartão com letras é recusada | PE (inválida) | ✅ |
+| CT14 | Compra com mês 13 é recusada | VL | ✅ |
+
+CT12 a CT14 esperam que o site recuse dados inválidos. Se o site aceitar, o teste falha:
+isso é um **defeito** e vai para o relatório (seção 4.1) com o print da pasta `evidencias/`.
 
 ## Checkpoints
 

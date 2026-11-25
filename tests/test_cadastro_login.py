@@ -72,3 +72,17 @@ def test_ct04_login_senha_errada_mostra_erro(driver, base_url, usuario_cadastrad
     alerta = pagina.mensagem_de_erro()
     pagina.salvar_evidencia("CT04_senha_errada")
     assert alerta == "Wrong password.", f"Alerta inesperado: {alerta!r}"
+
+
+@pytest.mark.login
+def test_ct09_login_usuario_nao_cadastrado_mostra_erro(driver, base_url):
+    """CT09 — PE (classe inválida): usuário que não existe."""
+    usuario = usuario_unico("naoexiste")
+    # Dado que abro o modal de login
+    pagina = LoginPage(driver, base_url).abrir()
+    # Quando entro com um usuário que nunca foi cadastrado
+    pagina.entrar(usuario, SENHA_PADRAO)
+    # Então vejo o alerta de usuário inexistente
+    alerta = pagina.mensagem_de_erro()
+    pagina.salvar_evidencia("CT09_usuario_nao_cadastrado")
+    assert alerta == "User does not exist.", f"Usuário {usuario!r}: alerta {alerta!r}"

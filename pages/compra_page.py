@@ -1,5 +1,7 @@
 """Page Object da finalização da compra (modal Place Order)."""
+from selenium.common.exceptions import NoAlertPresentException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from pages.base_page import BasePage
 
@@ -38,6 +40,22 @@ class CompraPage(BasePage):
         """Clica em 'Purchase' sem preencher nada e devolve o texto do alerta."""
         self.clicar(self.BOTAO_COMPRAR)
         return self.ler_alerta_e_aceitar()
+
+    def resultado_da_compra(self, timeout=10):
+        """Depois de clicar em 'Purchase', devolve ("recusada", texto do alerta)
+        ou ("confirmada", texto da janela de confirmação)."""
+        def verificar(d):
+            try:
+                return ("recusada", d.switch_to.alert.text)
+            except NoAlertPresentException:
+                pass
+            janelas = [e for e in d.find_elements(*self.CONFIRMACAO) if e.is_displayed()]
+            return ("confirmada", janelas[0].text) if janelas else False
+
+        tipo, texto = WebDriverWait(self.driver, timeout).until(verificar)
+        if tipo == "recusada":
+            self.driver.switch_to.alert.accept()
+        return tipo, texto
 
     def texto_confirmacao(self):
         return self.texto_de(self.CONFIRMACAO)

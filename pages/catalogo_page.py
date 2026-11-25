@@ -16,6 +16,8 @@ class CatalogoPage(BasePage):
     TITULO_PRODUTO = (By.CSS_SELECTOR, "h2.name")
     PRECO_PRODUTO = (By.CSS_SELECTOR, "h3.price-container")
     BOTAO_ADICIONAR = (By.CSS_SELECTOR, "a[onclick^='addToCart']")
+    IMAGEM_PRODUTO = (By.CSS_SELECTOR, "#imgp img")
+    DESCRICAO_PRODUTO = (By.CSS_SELECTOR, "#more-information p")
 
     def abrir(self):
         self.abrir_site()
@@ -56,6 +58,18 @@ class CatalogoPage(BasePage):
         if not resultado:
             raise AssertionError(f"Preço não identificado em {texto!r}.")
         return int(resultado.group())
+
+    def detalhes_produto(self):
+        """Dados exibidos na página do produto: nome, preço, imagem e descrição."""
+        imagem = self.esperar_visivel(self.IMAGEM_PRODUTO)
+        return {
+            "nome": self.nome_produto(),
+            "preco": self.preco_produto(),
+            "imagem_carregada": self.driver.execute_script(
+                "return arguments[0].complete && arguments[0].naturalWidth > 0;", imagem
+            ),
+            "descricao": self.texto_de(self.DESCRICAO_PRODUTO),
+        }
 
     def adicionar_carrinho(self):
         """Clica em 'Add to cart' e devolve o texto do alerta."""
