@@ -5,6 +5,16 @@ case **Demoblaze (Product Store)**: https://www.demoblaze.com
 
 Projeto construído a partir do kit inicial da disciplina (Prof. Leandro Negreiros).
 
+## Entregáveis
+
+| Arquivo | O que é |
+| --- | --- |
+| `docs/Relatorio_A3_Grupo2.pdf` | Relatório final (também em `.docx`) |
+| `docs/Slides_A3_Grupo2.pdf` | Slides da apresentação em PDF |
+| `docs/slides/index.html` | Slides em HTML: abra no navegador e use ← → para navegar |
+| `docs/slides/roteiro_de_fala.md` | Anotações de fala de cada slide |
+| `evidencias/` | Prints salvos pelos testes |
+
 ## Estrutura
 
 ```
@@ -23,7 +33,7 @@ tests/
   test_catalogo_carrinho_compra.py  fluxos 2 e 3: CT05 a CT08, CT10 e CT11
   test_validacoes.py     validações que o site deveria ter: CT12 a CT14
 evidencias/              prints gerados pelos testes
-docs/                    modelo do relatório A3
+docs/                    relatório, slides e modelo do relatório A3
 ```
 
 ## Como rodar

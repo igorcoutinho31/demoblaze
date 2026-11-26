@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A3 Demoblaze — Grupo 2</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap">
+<style>/* Tema: editor de código escuro. Verde = PASSED, laranja = FAILED / defeito, azul = palavra-chave. */
+:root {
+  --bg: #0D1416;
+  --bg2: #101B1E;
+  --panel: #152226;
+  --panel2: #1B2B30;
+  --line: #2A3C41;
+  --term: #091012;
+  --text: #E9F0ED;
+  --head: #F4F8F6;
+  --muted: #9BB0AA;
+  --dim: #7A9089;
+  --pass: #3DDC97;
+  --pass-bg: #123326;
+  --fail: #FF8A3D;
+  --fail-bg: #3A2214;
+  --kw: #7AA8FF;
+  --str: #E8C47A;
+  --ink: #0B1F17;
+  --display: 'Space Grotesk', Arial, sans-serif;
+  --sans: 'Inter', Arial, sans-serif;
+  --mono: 'JetBrains Mono', 'Courier New', monospace;
+}
+
+body { font-family: var(--sans); color: var(--text); }
+
+section {
+  background: radial-gradient(circle at 92% 0%, #16352F 0%, #0D1416 58%);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 30px;
+  line-height: 1.35;
+  padding: 128px 128px 160px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  counter-increment: page;
+}
+section::after {
+  content: "A3 · Grupo 2 · Demoblaze    " counter(page);
+  position: absolute;
+  left: 128px;
+  bottom: 64px;
+  width: 900px;
+  font-family: var(--mono);
+  font-size: 24px;
+  color: var(--dim);
+}
+section.alt { background: radial-gradient(circle at 8% 100%, #2A2017 0%, #101B1E 55%); }
+section.cover { padding: 128px; justify-content: space-between; }
+section.cover::after { content: none; }
+section.statement { background: var(--pass); color: var(--ink); }
+section.statement::after { color: #1E4A37; }
+
+/* Texto */
+.eyebrow { font-family: var(--mono); font-size: 24px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--pass); margin: 0; }
+.title { font-family: var(--display); font-size: 64px; font-weight: 700; line-height: 1.1; color: var(--head); margin: 0; }
+.hero { font-family: var(--display); font-size: 112px; font-weight: 700; line-height: 1.0; color: var(--head); margin: 0; }
+.head { display: flex; flex-direction: column; gap: 16px; }
+.lead { font-size: 40px; line-height: 1.3; color: var(--muted); margin: 0; }
+.body { font-size: 30px; color: var(--text); margin: 0; }
+.t28 { font-size: 28px; margin: 0; }
+.small { font-size: 24px; color: var(--muted); margin: 0; }
+.hl { color: var(--pass); }
+.hlf { color: var(--fail); }
+.tag { font-family: var(--mono); font-size: 24px; font-weight: 600; color: var(--pass); margin: 0; }
+.tag.fail { color: var(--fail); }
+.tag.dim { color: var(--dim); }
+.tag.kw { color: var(--kw); }
+
+/* Painéis */
+.panel { background: var(--panel); border: 2px solid var(--line); border-radius: 16px; padding: 32px 36px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; }
+.ptitle { font-family: var(--display); font-size: 36px; font-weight: 700; line-height: 1.15; color: var(--head); margin: 0; }
+.ptext { font-size: 28px; color: var(--muted); margin: 0; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+.iconrow { display: flex; align-items: center; gap: 18px; }
+.ico { width: 52px; height: 52px; }
+
+/* Janela de terminal */
+.win { background: var(--term); border: 2px solid var(--line); border-radius: 16px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; }
+.winbar { display: flex; align-items: center; gap: 12px; padding: 14px 22px; background: #121C1F; border-bottom: 2px solid var(--line); }
+.dot { width: 16px; height: 16px; }
+.wintitle { font-family: var(--mono); font-size: 24px; color: var(--dim); margin: 0 0 0 14px; }
+.winbody { padding: 24px 32px; display: flex; flex-direction: column; gap: 6px; }
+.winbody p { font-family: var(--mono); font-size: 26px; line-height: 1.3; color: var(--text); margin: 0; }
+.winbody .tight { font-size: 24px; }
+.c { color: var(--dim); }
+.ok { color: var(--pass); }
+.ko { color: var(--fail); }
+.kw { color: var(--kw); }
+.str { color: var(--str); }
+
+/* Números */
+.num { font-family: var(--display); font-size: 104px; font-weight: 700; line-height: 1.0; color: var(--head); margin: 0; }
+.num.pass { color: var(--pass); }
+.num.fail { color: var(--fail); }
+.lbl { font-size: 26px; color: var(--muted); margin: 0; }
+.stat { display: flex; flex-direction: column; gap: 6px; }
+
+/* Pílulas */
+.chips { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+.chip { font-family: var(--mono); font-size: 24px; color: var(--muted); background: var(--panel); border: 2px solid var(--line); border-radius: 999px; padding: 8px 20px; margin: 0; }
+.chip.fail { color: var(--fail); background: var(--fail-bg); border-color: var(--fail); }
+.chip.pass { color: var(--pass); background: var(--pass-bg); border-color: var(--pass); }
+
+/* Tabelas */
+table.t { font-family: var(--sans); font-size: 26px; color: var(--text); width: 100%; }
+table.t tr.h { background: var(--panel2); }
+
+/* Régua de valor-limite */
+.ruler { display: flex; align-items: center; gap: 8px; }
+.cell { width: 56px; height: 52px; border-radius: 8px; background: var(--panel2); display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+.cell p { font-family: var(--mono); font-size: 24px; color: var(--muted); margin: 0; }
+.cell.ok { background: var(--pass-bg); }
+.cell.ok p { color: var(--pass); }
+.cell.bad { background: var(--fail-bg); border: 2px solid var(--fail); }
+.cell.bad p { color: var(--fail); font-weight: 600; }
+
+/* Diagrama da arquitetura */
+.flow { display: flex; align-items: stretch; gap: 16px; }
+.node { background: var(--panel); border: 2px solid var(--line); border-radius: 16px; padding: 24px 22px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; width: 262px; }
+.node.hot { border-color: var(--pass); }
+.nlabel { font-family: var(--display); font-size: 28px; font-weight: 700; color: var(--head); margin: 0; }
+.ncap { font-size: 24px; color: var(--muted); margin: 0; }
+.arrowbox { display: flex; align-items: center; width: 56px; }
+.arrow { width: 56px; height: 28px; background: var(--pass); }
+
+/* Barra empilhada */
+.stack { display: flex; height: 64px; border-radius: 12px; overflow: hidden; }
+.seg { display: flex; align-items: center; padding: 0 24px; box-sizing: border-box; }
+.seg p { font-family: var(--mono); font-size: 24px; font-weight: 600; color: var(--ink); margin: 0; }
+.seg.pass { background: var(--pass); }
+.seg.fail { background: var(--fail); }
+
+/* Marcações sobre o print */
+.mark { position: absolute; border: 4px solid var(--fail); border-radius: 8px; box-sizing: border-box; }
+.pin { position: absolute; font-family: var(--mono); font-size: 24px; font-weight: 600; color: #1A0E06; background: var(--fail); border-radius: 8px; padding: 6px 14px; margin: 0; }
+
+/* Membros */
+.members { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px 40px; }
+.members p { font-size: 24px; color: var(--muted); margin: 0; }
+
+/* Imagens */
+.shot { border-radius: 12px; border: 2px solid var(--line); object-fit: contain; background: #F4F6F1; }
+
+/* Movimento: tudo chega em menos de ~1,3 s, em sequência */
+@keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slide { from { opacity: 0; transform: translateX(-36px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse { from { box-shadow: 0 0 0 0 rgba(255, 138, 61, 0.75); } to { box-shadow: 0 0 0 18px rgba(255, 138, 61, 0); } }
+.in { animation: rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 110ms); }
+.go { animation: slide 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 140ms); }
+.line { animation: fade 220ms linear both; animation-delay: calc(var(--i, 0) * 70ms + 250ms); }
+.mark.in { animation: rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both, pulse 1000ms ease-out 3; animation-delay: calc(var(--i, 0) * 110ms), calc(var(--i, 0) * 110ms + 600ms); }
+
+html, body { margin: 0; height: 100%; background: #05090A; overflow: hidden; }
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; }
+section { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: none !important; }
+section.on { display: flex !important; }
+section aside { display: none; }
+x-shape { display: block; }
+section::after { content: "A3 · Grupo 2 · Demoblaze    " attr(data-n) !important; }
+section.cover::after { content: none !important; }
+table.t { border-collapse: collapse; }
+table.t th, table.t td { padding: 0.45em 0.6em; border-bottom: 1px solid #2A3C41; text-align: left; }
+x-shape[kind="ellipse"] { border-radius: 50%; }
+x-shape[kind="arrow-right"] { clip-path: polygon(0 30%, 60% 30%, 60% 0, 100% 50%, 60% 100%, 60% 70%, 0 70%); }
+#nav { position: fixed; right: 16px; bottom: 12px; font: 14px system-ui, sans-serif; color: #7A9089; }
+body.static * { animation: none !important; }
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  html, body { height: auto; overflow: visible; background: none; }
+  #stage { position: static; transform: none !important; }
+  section { position: relative; display: flex !important; break-after: page; }
+  #nav { display: none; }
+  * { animation: none !important; }
+}
+</style></head>
+<body><div id="stage">
+<section id="cover" data-n="1" class="cover" data-transition="fade">
+<div style="display:flex; gap:64px; align-items:center;">
+<div style="display:flex; flex-direction:column; gap:28px; width:900px;">
+<p class="eyebrow in" style="--i:0;">// Garantia da Qualidade de Software · USJT 2026/2</p>
+<h1 class="hero in" style="--i:1;">Testando o <span class="hl">Demoblaze</span></h1>
+<p class="lead in" style="--i:2;">Plano de testes, automação com Selenium e os defeitos que encontramos numa loja virtual.</p>
+</div>
+<div class="win in" style="--i:3; width:700px;">
+<div class="winbar"><x-shape kind="ellipse" class="dot" style="background:#FF8A3D;"></x-shape><x-shape kind="ellipse" class="dot" style="background:#E8C47A;"></x-shape><x-shape kind="ellipse" class="dot" style="background:#3DDC97;"></x-shape><p class="wintitle">PowerShell · demoblaze</p></div>
+<div class="winbody">
+<p class="line" style="--i:4;"><span class="c">$</span> python -m pytest</p>
+<p class="line" style="--i:5;"><span class="c">collected 14 items</span></p>
+<p class="line" style="--i:6;">CT01–CT11 <span class="c">.........</span> <span class="ok">PASSED</span></p>
+<p class="line" style="--i:7;">CT12–CT14 <span class="c">.........</span> <span class="ko">FAILED</span></p>
+<p class="line" style="--i:8;"><span class="ko">3 failed</span>, <span class="ok">11 passed</span> <span class="c">in 217.97s</span></p>
+</div>
+</div>
+</div>
+<div class="head in" style="--i:5;">
+<p class="tag dim">Grupo 2 · Prof. Leandro Negreiros</p>
+<div class="members">
+<p>Anna Beatriz Saroa Franco</p>
+<p>Gabriel Dousseau</p>
+<p>Igor Coutinho</p>
+<p>Julia Santos Moreira</p>
+<p>Luã Luz Santos</p>
+<p>Victor Oliveira</p>
+</div>
+</div>
+<aside>Apresentar o grupo. Uma frase: testamos a loja Demoblaze, automatizamos 14 casos e encontramos 5 defeitos. A linha do terminal é o resultado real da execução final de 25/11.</aside>
+</section>
+<section id="sistema" data-n="2">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// O sistema</p>
+<h2 class="title in" style="--i:1;">Uma loja de eletrônicos de demonstração</h2>
+</div>
+<p class="body in" style="--i:2; max-width:1500px; color:var(--muted);">O Demoblaze vende celulares, notebooks e monitores. Cadastro, login e compra acontecem em janelas modais, e o site responde com alertas do navegador.</p>
+<div class="flow">
+<div class="panel go" style="--i:3; flex:1;">
+<p class="tag">01 · fluxo</p>
+<p class="ptitle">Cadastro e login</p>
+<p class="ptext">Sign up e Log in</p>
+</div>
+<div class="arrowbox go" style="--i:4;"><x-shape kind="arrow-right" class="arrow"></x-shape></div>
+<div class="panel go" style="--i:5; flex:1;">
+<p class="tag">02 · fluxo</p>
+<p class="ptitle">Catálogo e produto</p>
+<p class="ptext">Categorias e página do produto</p>
+</div>
+<div class="arrowbox go" style="--i:6;"><x-shape kind="arrow-right" class="arrow"></x-shape></div>
+<div class="panel go" style="--i:7; flex:1;">
+<p class="tag">03 · fluxo</p>
+<p class="ptitle">Carrinho e compra</p>
+<p class="ptext">Finalização com Place Order</p>
+</div>
+</div>
+<div class="chips in" style="--i:8;">
+<p class="tag dim">Fora do escopo:</p>
+<p class="chip">Carga e desempenho</p>
+<p class="chip">Contact e About us</p>
+<p class="chip">Outros navegadores</p>
+</div>
+<aside>Explicar o site em uma frase. Os três fluxos são os que o guia do professor pediu, na ordem em que um cliente usa a loja. Fora do escopo: a regra da disciplina proíbe teste de carga, e escolhemos só o Chrome.</aside>
+</section>
+<section id="plano" data-n="3" class="alt">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Plano de testes · ISO/IEC 25010</p>
+<h2 class="title in" style="--i:1;">Cinco atributos, dois priorizados</h2>
+</div>
+<div class="row2">
+<div class="panel in" style="--i:2;">
+<div class="iconrow"><svg class="ico" style="color:#3DDC97;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></svg><p class="ptitle">Adequação funcional</p></div>
+<p class="ptext">Produtos certos na vitrine, total igual à soma dos preços e compra só com dados válidos.</p>
+</div>
+<div class="panel in" style="--i:3;">
+<div class="iconrow"><svg class="ico" style="color:#7AA8FF;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><p class="ptitle">Segurança</p></div>
+<p class="ptext">Senha e cartão: validação fraca expõe o cliente a fraude (LGPD, PCI DSS).</p>
+</div>
+</div>
+<div class="chips in" style="--i:4;">
+<p class="tag dim">Observados na execução:</p>
+<p class="chip">Usabilidade</p>
+<p class="chip">Confiabilidade</p>
+<p class="chip">Eficiência de desempenho</p>
+</div>
+<div class="win in" style="--i:5;">
+<div class="winbar"><x-shape kind="ellipse" class="dot" style="background:#FF8A3D;"></x-shape><x-shape kind="ellipse" class="dot" style="background:#E8C47A;"></x-shape><x-shape kind="ellipse" class="dot" style="background:#3DDC97;"></x-shape><p class="wintitle">criterios_de_aceitacao · 7 critérios, todos automatizados</p></div>
+<div class="winbody">
+<p class="line" style="--i:6;"><span class="kw">Cenário:</span> CA02 · Login</p>
+<p class="line" style="--i:7;"><span class="kw">Dado</span> um usuário cadastrado, <span class="kw">Quando</span> faz login,</p>
+<p class="line" style="--i:8;"><span class="kw">Então</span> vê <span class="str">“Welcome &lt;usuário&gt;”</span>; com senha errada, um alerta de erro</p>
+</div>
+</div>
+<aside>Consideramos cinco atributos da ISO/IEC 25010. Priorizamos dois, que têm testes automatizados: adequação funcional, porque é uma loja, e segurança, porque o site recebe senha e cartão. Usabilidade, confiabilidade e eficiência de desempenho foram observadas durante a execução, sem testes específicos; por exemplo, o atraso no carregamento das páginas exigiu esperas explícitas. Mostrar o CA02 como exemplo de critério Dado / Quando / Então. São 7 critérios (CA01 a CA07), todos com teste automatizado.</aside>
+</section>
+<section id="riscos" data-n="4">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Riscos do projeto</p>
+<h2 class="title in" style="--i:1;">O que podia atrapalhar, e como tratamos</h2>
+</div>
+<table class="t in" style="--i:2; font-size:24px;">
+<tr class="h"><th style="width:34%;">Risco</th><th style="width:46%;">Ação preventiva ou corretiva</th><th style="width:10%;">Sev.</th><th style="width:10%;">Prior.</th></tr>
+<tr><td>Site instável ou fora do ar</td><td>Verificar antes e repetir a execução</td><td style="color:#FF8A3D;">Alta</td><td style="color:#FF8A3D;">Alta</td></tr>
+<tr><td>Nome de usuário já cadastrado</td><td>Nome fictício e único a cada execução</td><td>Média</td><td>Média</td></tr>
+<tr><td>Páginas e produtos demorando</td><td>Esperas explícitas (WebDriverWait)</td><td>Média</td><td style="color:#FF8A3D;">Alta</td></tr>
+<tr><td>Alertas e modais na automação</td><td>Tratar alertas e aguardar os modais</td><td style="color:#FF8A3D;">Alta</td><td style="color:#FF8A3D;">Alta</td></tr>
+<tr><td>Mudança no site quebrar seletores</td><td>Seletores centralizados nos Page Objects</td><td>Média</td><td>Média</td></tr>
+<tr><td>Cadastro ou login aceitar dado inválido</td><td>CT02, CT04, CT09 e CT12</td><td style="color:#FF8A3D;">Alta</td><td style="color:#FF8A3D;">Alta</td></tr>
+<tr><td>Total do carrinho errado</td><td>CT06 e CT11 conferem o total</td><td style="color:#FF8A3D;">Alta</td><td style="color:#FF8A3D;">Alta</td></tr>
+<tr><td>Compra com dados inválidos</td><td>CT07, CT13 e CT14</td><td style="color:#FF8A3D;">Alta</td><td style="color:#FF8A3D;">Alta</td></tr>
+</table>
+<aside>Os cinco primeiros riscos são do projeto: coisas que podiam atrapalhar os testes, como o site instável ou os alertas do navegador. Os três últimos são riscos do produto, e cada um tem casos de teste que o verificam. Severidade é o impacto do problema; prioridade é a urgência de tratar.</aside>
+</section>
+<section id="casos" data-n="5">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Casos de teste</p>
+<h2 class="title in" style="--i:1;">14 casos, duas técnicas de projeto</h2>
+</div>
+<div class="row2 in" style="--i:2; gap:56px;">
+<table class="t" style="font-size:24px;">
+<tr class="h"><th style="width:16%;">ID</th><th style="width:56%;">Caso</th><th style="width:28%;">Técnica</th></tr>
+<tr><td>CT01</td><td>Cadastro com usuário novo</td><td>PE válida</td></tr>
+<tr><td>CT02</td><td>Cadastro com usuário existente</td><td>PE inválida</td></tr>
+<tr><td>CT03</td><td>Login válido</td><td>PE válida</td></tr>
+<tr><td>CT04</td><td>Login com senha errada</td><td>PE inválida</td></tr>
+<tr><td>CT05</td><td>Filtro por categoria</td><td>PE</td></tr>
+<tr><td>CT06</td><td>Total do carrinho</td><td>Fluxo</td></tr>
+<tr><td>CT07</td><td>Compra com nome e cartão vazios</td><td>VL (0)</td></tr>
+</table>
+<table class="t" style="font-size:24px;">
+<tr class="h"><th style="width:16%;">ID</th><th style="width:56%;">Caso</th><th style="width:28%;">Técnica</th></tr>
+<tr><td>CT08</td><td>Compra completa</td><td>Fluxo</td></tr>
+<tr><td>CT09</td><td>Login com usuário inexistente</td><td>PE inválida</td></tr>
+<tr><td>CT10</td><td>Página do produto</td><td>Fluxo</td></tr>
+<tr><td>CT11</td><td>Remover do carrinho</td><td>Fluxo</td></tr>
+<tr><td style="color:#FF8A3D;">CT12</td><td>Senha de 7 caracteres</td><td style="color:#FF8A3D;">VL</td></tr>
+<tr><td style="color:#FF8A3D;">CT13</td><td>Cartão com letras</td><td style="color:#FF8A3D;">PE inválida</td></tr>
+<tr><td style="color:#FF8A3D;">CT14</td><td>Mês 13</td><td style="color:#FF8A3D;">VL</td></tr>
+</table>
+</div>
+<div style="display:flex; justify-content:space-between; align-items:center;">
+<div class="ruler go" style="--i:3;">
+<p class="tag dim" style="margin-right:12px;">VL · mês</p>
+<div class="cell ok"><p>1</p></div>
+<div class="cell ok"><p>2</p></div>
+<div class="cell"><p>…</p></div>
+<div class="cell ok"><p>11</p></div>
+<div class="cell ok"><p>12</p></div>
+<div class="cell bad"><p>13</p></div>
+</div>
+<div class="ruler go" style="--i:4;">
+<p class="tag dim" style="margin-right:12px;">VL · senha</p>
+<div class="cell"><p>…</p></div>
+<div class="cell bad"><p>7</p></div>
+<div class="cell ok"><p>8</p></div>
+<div class="cell ok"><p>9</p></div>
+<div class="cell"><p>…</p></div>
+</div>
+</div>
+<p class="small in" style="--i:5;">PE = partição de equivalência · VL = valor-limite · em laranja: validações que o site deveria ter (CT12 a CT14)</p>
+<aside>PE separa entradas válidas e inválidas, como usuário novo e usuário repetido. VL testa o limite: 0 caractere na compra, senha de 7 para um mínimo de 8, mês 13 para um máximo de 12. As réguas mostram esses dois limites: em verde o que é válido, em laranja o valor testado. Os CT12 a CT14 foram feitos para encontrar defeitos. CT10 e CT11 foram propostos pela Julia.</aside>
+</section>
+<section id="detalhe" data-n="6" class="alt">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Detalhamento dos casos</p>
+<h2 class="title in" style="--i:1;">Como cada caso foi especificado: o CT13</h2>
+</div>
+<div class="panel in" style="--i:2; gap:20px; padding:32px 40px;">
+<div style="display:grid; grid-template-columns:330px 1fr; gap:20px 32px;">
+<p class="tag">Objetivo</p>
+<p class="t28">Verificar se o sistema recusa um número de cartão com letras.</p>
+<p class="tag">Pré-condições</p>
+<p class="t28">Ao menos 1 produto no carrinho.</p>
+<p class="tag">Fluxo principal</p>
+<p class="t28">Cart → Place Order → cartão “abcdefghijklmnop” → Purchase</p>
+<p class="tag kw">Fluxos alternativos</p>
+<p class="t28" style="color:var(--muted);">FA01: cartão com poucos dígitos · FA02: cartão com espaços</p>
+<p class="tag fail">Resultado esperado</p>
+<p class="t28">Compra recusada. Se aparecer “Thank you for your purchase!”, é defeito.</p>
+</div>
+</div>
+<p class="small in" style="--i:3;">Os 14 casos seguem essa estrutura no relatório, agrupados por fluxo: cadastro, login, catálogo, carrinho e finalização da compra.</p>
+<aside>Este é o formato usado no capítulo 3 do relatório para os 14 casos. Os fluxos alternativos são variações do caso, para executar separadamente quando fizer sentido. No CT13, o resultado esperado não aconteceu: o site confirmou a compra, e isso virou o defeito DF02.</aside>
+</section>
+<section id="automacao" data-n="7" class="alt">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Automação</p>
+<h2 class="title in" style="--i:1;">Python, Selenium e pytest com Page Objects</h2>
+</div>
+<div class="flow">
+<div class="node hot go" style="--i:2;">
+<p class="tag">tests/</p>
+<p class="nlabel">Teste pytest</p>
+<p class="ncap">Cenário em Dado, Quando, Então</p>
+</div>
+<div class="arrowbox go" style="--i:3;"><x-shape kind="arrow-right" class="arrow"></x-shape></div>
+<div class="node go" style="--i:4;">
+<p class="tag">pages/</p>
+<p class="nlabel">Page Objects</p>
+<p class="ncap">Seletores e ações de cada tela</p>
+</div>
+<div class="arrowbox go" style="--i:5;"><x-shape kind="arrow-right" class="arrow"></x-shape></div>
+<div class="node go" style="--i:6;">
+<p class="tag">WebDriver</p>
+<p class="nlabel">Selenium</p>
+<p class="ncap">Clica, digita e espera como uma pessoa</p>
+</div>
+<div class="arrowbox go" style="--i:7;"><x-shape kind="arrow-right" class="arrow"></x-shape></div>
+<div class="node go" style="--i:8;">
+<p class="tag">conftest.py</p>
+<p class="nlabel">Chrome</p>
+<p class="ncap">Abre a cada teste e salva print em falha</p>
+</div>
+<div class="arrowbox go" style="--i:9;"><x-shape kind="arrow-right" class="arrow"></x-shape></div>
+<div class="node go" style="--i:10;">
+<p class="tag">evidencias/</p>
+<p class="nlabel">Demoblaze</p>
+<p class="ncap">O sistema testado, com prints de cada teste</p>
+</div>
+</div>
+<div class="row3">
+<div class="panel in" style="--i:11;">
+<div class="iconrow"><svg class="ico" style="color:#3DDC97;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><p class="ptitle">Esperas explícitas</p></div>
+<p class="ptext">Modais, vitrine e carrinho carregam com atraso.</p>
+</div>
+<div class="panel in" style="--i:12;">
+<div class="iconrow"><svg class="ico" style="color:#3DDC97;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><p class="ptitle">Leitura dos alertas</p></div>
+<p class="ptext">Cadastro, login e “Add to cart” respondem com alertas do navegador.</p>
+</div>
+<div class="panel in" style="--i:13;">
+<div class="iconrow"><svg class="ico" style="color:#3DDC97;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.1a4 4 0 0 1 0 7.8"/><path d="M21 21v-2a4 4 0 0 0-3-3.9"/></svg><p class="ptitle">Usuário único</p></div>
+<p class="ptext">O site recusa nomes repetidos, então cada execução cria um novo.</p>
+</div>
+</div>
+<aside>Seguir o diagrama da esquerda para a direita: o teste descreve o cenário, o Page Object sabe onde clicar, o Selenium controla o Chrome, e o Chrome abre o Demoblaze. Embaixo, as três decisões que deixaram os testes estáveis. Repositório: github.com/igorcoutinho31/demoblaze.</aside>
+</section>
+<section id="resultado" data-n="8">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Execução final · 25/11/2026</p>
+<h2 class="title in" style="--i:1;">11 testes aprovados, 3 reprovados</h2>
+</div>
+<div style="display:flex; gap:56px; align-items:flex-start;">
+<div class="win in" style="--i:1; width:1060px;">
+<div class="winbar"><x-shape kind="ellipse" class="dot" style="background:#FF8A3D;"></x-shape><x-shape kind="ellipse" class="dot" style="background:#E8C47A;"></x-shape><x-shape kind="ellipse" class="dot" style="background:#3DDC97;"></x-shape><p class="wintitle">python -m pytest · 14 items</p></div>
+<div class="winbody" style="gap:0; padding:20px 30px;">
+<p class="line tight" style="--i:1;"><span class="c">CT01</span> cadastro_usuario_novo <span class="c">.............</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:2;"><span class="c">CT02</span> cadastro_usuario_existente <span class="c">........</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:3;"><span class="c">CT03</span> login_valido <span class="c">......................</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:4;"><span class="c">CT04</span> login_senha_errada <span class="c">................</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:5;"><span class="c">CT05</span> filtro_categoria_monitores <span class="c">........</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:6;"><span class="c">CT06</span> total_do_carrinho <span class="c">.................</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:7;"><span class="c">CT07</span> compra_campos_vazios <span class="c">..............</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:8;"><span class="c">CT08</span> compra_completa <span class="c">...................</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:9;"><span class="c">CT09</span> login_usuario_nao_cadastrado <span class="c">......</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:10;"><span class="c">CT10</span> pagina_do_produto <span class="c">.................</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:11;"><span class="c">CT11</span> remover_produto <span class="c">...................</span> <span class="ok">PASSED</span></p>
+<p class="line tight" style="--i:12;"><span class="c">CT12</span> senha_de_7_caracteres <span class="c">.............</span> <span class="ko">FAILED</span></p>
+<p class="line tight" style="--i:13;"><span class="c">CT13</span> cartao_com_letras <span class="c">.................</span> <span class="ko">FAILED</span></p>
+<p class="line tight" style="--i:14;"><span class="c">CT14</span> compra_com_mes_13 <span class="c">.................</span> <span class="ko">FAILED</span></p>
+<p class="line tight" style="--i:16;"><span class="ko">3 failed</span>, <span class="ok">11 passed</span> <span class="c">in 217.97s</span></p>
+</div>
+</div>
+<div style="display:flex; flex-direction:column; gap:40px; width:548px;">
+<div class="stat in" style="--i:15;"><p class="num">14</p><p class="lbl">testes executados em 217,97 s</p></div>
+<div class="stat in" style="--i:16;"><p class="num pass">11</p><p class="lbl">PASSED: os fluxos principais funcionam</p></div>
+<div class="stat in" style="--i:17;"><p class="num fail">3</p><p class="lbl">FAILED: CT12, CT13 e CT14, as validações</p></div>
+</div>
+</div>
+<aside>As linhas aparecem em ordem numérica (na execução real, o CT09 roda junto com os testes de login, logo depois do CT04). Os 11 testes de comportamento esperado passaram. Os 3 reprovados são os de validação, e aqui a falha é do site. Contar também a primeira execução de 18/11: 3 testes falharam porque o teste esperava “Product added.” com ponto e o site mostra sem ponto. Era erro do teste, e corrigimos o teste, não o resultado. O print real do terminal está no relatório, Figura 3.</aside>
+</section>
+<section id="defeitos" data-n="9" class="alt">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Defeitos</p>
+<h2 class="title in" style="--i:1;">5 defeitos, 4 deles no fluxo de compra</h2>
+</div>
+<table class="t in" style="--i:2; font-size:28px;">
+<tr class="h"><th style="width:10%;">ID</th><th style="width:60%;">Defeito</th><th style="width:15%;">Severidade</th><th style="width:15%;">Teste</th></tr>
+<tr><td style="color:#FF8A3D;">DF01</td><td>Cadastro aceita senha de 7 caracteres</td><td>Média</td><td>CT12</td></tr>
+<tr><td style="color:#FF8A3D;">DF02</td><td>Compra confirmada com cartão “abcdefghijklmnop”</td><td style="color:#FF8A3D;">Alta</td><td>CT13</td></tr>
+<tr><td style="color:#FF8A3D;">DF03</td><td>Compra confirmada com mês 13</td><td>Média</td><td>CT14</td></tr>
+<tr><td style="color:#FF8A3D;">DF04</td><td>Comprovante mostra a data com um mês a menos</td><td>Baixa</td><td>CT13</td></tr>
+<tr><td style="color:#FF8A3D;">DF05</td><td>Comprovante exibe o número completo do cartão</td><td style="color:#FF8A3D;">Alta</td><td>CT13</td></tr>
+</table>
+<div class="chips in" style="--i:3;">
+<p class="chip fail">2 · severidade alta</p>
+<p class="chip">2 · média</p>
+<p class="chip">1 · baixa</p>
+</div>
+<p class="small in" style="--i:4;">DF01 a DF03: encontrados pelos testes de validação. DF04 e DF05: encontrados pelo grupo ao analisar o print do CT13.</p>
+<aside>Cada defeito tem passos, esperado, obtido e evidência no relatório, seção 4.1. Os dois de severidade alta envolvem dados de cartão.</aside>
+</section>
+<section id="evidencia" data-n="10">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Evidência do CT13</p>
+<h2 class="title in" style="--i:1;">Um comprovante, três defeitos</h2>
+</div>
+<div style="display:flex; gap:56px; align-items:flex-start;">
+<div class="in" style="--i:2; position:relative; width:1000px; height:593px;">
+<img class="shot" src="img/ct13_comprovante.png" alt="Janela Thank you for your purchase! com Card Number abcdefghijklmnop e Date 25/10/2026" style="width:1000px; height:593px;">
+<div class="mark in" style="--i:5; left:352px; top:310px; width:272px; height:44px;"></div>
+<p class="pin in" style="--i:5; left:636px; top:308px;">DF02 · DF05</p>
+<div class="mark in" style="--i:8; left:412px; top:358px; width:152px; height:42px;"></div>
+<p class="pin in" style="--i:8; left:576px; top:356px;">DF04</p>
+</div>
+<div style="display:flex; flex-direction:column; gap:36px; width:608px;">
+<div class="in" style="--i:4; display:flex; flex-direction:column; gap:8px;">
+<p class="tag fail">DF02 · Card Number: abcdefghijklmnop</p>
+<p class="t28">A compra foi confirmada com letras no lugar do número do cartão.</p>
+</div>
+<div class="in" style="--i:6; display:flex; flex-direction:column; gap:8px;">
+<p class="tag fail">DF05 · o número aparece inteiro</p>
+<p class="t28">O PCI DSS manda mostrar só os 4 últimos dígitos.</p>
+</div>
+<div class="in" style="--i:8; display:flex; flex-direction:column; gap:8px;">
+<p class="tag fail">DF04 · Date: 25/10/2026</p>
+<p class="t28">A compra foi feita em 25/11/2026. A data sai com um mês a menos.</p>
+</div>
+</div>
+</div>
+<aside>Este print foi salvo automaticamente pelo CT13. As marcações laranja aparecem em cima do número do cartão e da data. O teste encontrou o DF02. Analisando o print, o grupo encontrou o DF04 e o DF05. O print do CT14 mostra a mesma data errada e o cartão inteiro, então os dois se repetem.</aside>
+</section>
+<section id="metricas" data-n="11" class="alt">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Métricas</p>
+<h2 class="title in" style="--i:1;">O site funciona com dados certos e falha com dados errados</h2>
+</div>
+<div class="row3">
+<div class="panel in" style="--i:2;">
+<p class="num pass">78,6%</p>
+<p class="ptitle">Testes aprovados</p>
+<p class="ptext">11 ÷ 14. As 3 reprovações são todas de validação.</p>
+</div>
+<div class="panel in" style="--i:3;">
+<p class="num pass">100%</p>
+<p class="ptitle">Critérios cobertos</p>
+<p class="ptext">7 ÷ 7 critérios de aceitação têm teste automatizado.</p>
+</div>
+<div class="panel in" style="--i:4;">
+<p class="num fail">4 de 5</p>
+<p class="ptitle">Defeitos na compra</p>
+<p class="ptext">Cadastro e login: 1 · Catálogo: 0 · Carrinho e compra: 4.</p>
+</div>
+</div>
+<div class="stack go" style="--i:6;">
+<div class="seg pass" style="flex:11;"><p>11 PASSED</p></div>
+<div class="seg fail" style="flex:3;"><p>3 FAILED</p></div>
+</div>
+<aside>Ler os três números. A barra mostra a proporção da execução final: 11 aprovados e 3 reprovados. A conclusão: os fluxos principais funcionam, mas o site não se protege de dados incorretos, e o problema se concentra justamente onde tem dinheiro e cartão.</aside>
+</section>
+<section id="etica" data-n="12">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Ética</p>
+<h2 class="title in" style="--i:1;">Quem é prejudicado</h2>
+</div>
+<div class="row3">
+<div class="panel in" style="--i:2;">
+<div class="iconrow"><svg class="ico" style="color:#FF8A3D;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="5.5"/><path d="M11.5 11.5L21 2M18 5l3 3M15 8l3 3"/></svg><p class="tag fail">DF01 · senha fraca</p></div>
+<p class="ptitle">Clientes com conta</p>
+<p class="ptext">Senha curta é descoberta por tentativa e erro, e a conta invadida expõe dados pessoais.</p>
+<p class="tag kw">LGPD, art. 46</p>
+</div>
+<div class="panel in" style="--i:3;">
+<div class="iconrow"><svg class="ico" style="color:#FF8A3D;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><p class="tag fail">DF02 e DF03 · pagamento</p></div>
+<p class="ptitle">Clientes e a loja</p>
+<p class="ptext">O pedido é confirmado com cartão inválido: o cliente acha que comprou e a loja processa pedidos que não serão pagos.</p>
+<p class="tag kw">CDC, arts. 6º e 14 · PCI DSS</p>
+</div>
+<div class="panel in" style="--i:4;">
+<div class="iconrow"><svg class="ico" style="color:#FF8A3D;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M6.5 17A2.5 2.5 0 0 0 4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></svg><p class="tag fail">DF04 e DF05 · comprovante</p></div>
+<p class="ptitle">Clientes</p>
+<p class="ptext">A data errada atrapalha provar a compra, e o cartão completo fica exposto na tela.</p>
+<p class="tag kw">CDC, art. 49 · PCI DSS · LGPD</p>
+</div>
+</div>
+<div class="panel in" style="--i:6; flex-direction:row; align-items:center; gap:24px; padding:24px 32px;">
+<svg class="ico" style="color:#3DDC97;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+<p class="t28">Quem desenvolve valida os dados no servidor. Quem testa procura o problema de propósito e não esconde o resultado.</p>
+</div>
+<aside>Em um sistema real, quem paga o preço é o consumidor, que tem menos informação para perceber o problema. Responsabilidade: na primeira execução a falha era nossa e corrigimos o teste; nos CT12 a CT14 a falha é do site, e mantivemos os testes falhando, como pede a disciplina.</aside>
+</section>
+<section id="recomendacoes" data-n="13" class="alt">
+<div class="head">
+<p class="eyebrow in" style="--i:0;">// Recomendações</p>
+<h2 class="title in" style="--i:1;">O que evitaria esses defeitos</h2>
+</div>
+<div class="row3" style="gap:24px 32px;">
+<div class="panel in" style="--i:2; padding:24px 32px;">
+<p class="tag">→ corrige DF01</p>
+<p class="ptitle">Senha com 8 caracteres ou mais</p>
+<p class="ptext">E bloqueio de senhas vazadas (OWASP, NIST).</p>
+</div>
+<div class="panel in" style="--i:3; padding:24px 32px;">
+<p class="tag">→ corrige DF02</p>
+<p class="ptitle">Validar o cartão no servidor</p>
+<p class="ptext">Só dígitos, tamanho certo e dígito verificador (Luhn).</p>
+</div>
+<div class="panel in" style="--i:4; padding:24px 32px;">
+<p class="tag">→ corrige DF03</p>
+<p class="ptitle">Recusar datas impossíveis</p>
+<p class="ptext">Mês de 1 a 12 e cartão dentro da validade.</p>
+</div>
+<div class="panel in" style="--i:5; padding:24px 32px;">
+<p class="tag">→ corrige DF04</p>
+<p class="ptitle">Gerar a data do pedido no servidor</p>
+<p class="ptext">E conferir o comprovante no teste de compra.</p>
+</div>
+<div class="panel in" style="--i:6; padding:24px 32px;">
+<p class="tag">→ corrige DF05</p>
+<p class="ptitle">Mascarar o cartão no comprovante</p>
+<p class="ptext">Só os 4 últimos dígitos (PCI DSS).</p>
+</div>
+<div class="panel in" style="--i:7; padding:24px 32px; border-color:#3DDC97;">
+<p class="tag">→ protege CT12 a CT14</p>
+<p class="ptitle">Manter os testes na rotina</p>
+<p class="ptext">Rodando a cada mudança, para o defeito não voltar.</p>
+</div>
+</div>
+<aside>Cada recomendação responde a um defeito, indicado em verde no topo do cartão. A última é a mais importante para quem testa: o teste automatizado só protege se rodar sempre.</aside>
+</section>
+<section id="fim" data-n="14" class="statement">
+<div style="flex:1;"></div>
+<p class="tag in" style="--i:0; color:#1E4A37;">// fim da execução</p>
+<h2 class="hero in" style="--i:1; color:#0B1F17;">Obrigado. Perguntas?</h2>
+<p class="lead in" style="--i:2; color:#174A35;">14 testes automatizados, 5 defeitos com evidência, e um teste que falha nunca é apagado.</p>
+<div style="flex:1;"></div>
+<p class="tag in" style="--i:3; color:#1E4A37;">github.com/igorcoutinho31/demoblaze · Uso de IA declarado no relatório</p>
+<aside>Agradecer e abrir para perguntas. Se perguntarem sobre IA: o uso está declarado no relatório, e o grupo rodou todos os testes, conferiu no site e revisou o texto.</aside>
+</section>
+
+</div><div id="nav"></div><script>
+const S=[...document.querySelectorAll('section')];let k=0;
+const st=document.getElementById('stage');
+function fit(){const z=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform=`scale(${z}) translate(-50%,-50%)`;st.style.transformOrigin='0 0';st.style.left='50%';st.style.top='50%';st.style.transform=`translate(-50%,-50%) scale(${z})`;st.style.transformOrigin='center';}
+function show(n){k=Math.max(0,Math.min(S.length-1,n));S.forEach((s,i)=>s.classList.toggle('on',i===k));document.getElementById('nav').textContent=(k+1)+' / '+S.length+'  ·  ← → para navegar';location.hash='#'+(k+1);}
+addEventListener('keydown',e=>{if(['ArrowRight','PageDown',' ','Enter'].includes(e.key))show(k+1);if(['ArrowLeft','PageUp','Backspace'].includes(e.key))show(k-1);if(e.key==='Home')show(0);if(e.key==='End')show(S.length-1);});
+addEventListener('click',e=>show(e.clientX>innerWidth/2?k+1:k-1));
+addEventListener('resize',fit);fit();show((parseInt(location.hash.slice(1))||1)-1);
+</script></body></html>

@@ -5,5 +5,3 @@ __pycache__/
 venv/
 report.html
 assets/
-evidencias/*.png
-!evidencias/.gitkeep
